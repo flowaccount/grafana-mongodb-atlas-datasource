@@ -17,7 +17,7 @@ type AtlasCredentials struct {
 
 func MakeHttpRequest(ctx context.Context, path string, credentials *AtlasCredentials, query map[string]string) ([]byte, error) {
 	var method = "GET"
-	var baseURL = "https://cloud.mongodb.com/api/atlas/v1.0"
+	var baseURL = "https://cloud.mongodb.com/api/public/v1.0"
 	var uri = baseURL + path
 
 	pluginLogger.Debug("MakeHttpRequest", "URL", uri)
