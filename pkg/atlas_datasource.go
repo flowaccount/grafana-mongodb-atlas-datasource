@@ -126,7 +126,7 @@ func GetClusters(ctx context.Context, credentials *AtlasCredentials, groupId str
 
 		clusters[i] = Cluster{
 			ID:   jCluster.Get("id").MustString(),
-			Name: jCluster.Get("name").MustString(),
+			Name: jCluster.Get("clusterName").MustString(),
 		}
 	}
 
@@ -139,7 +139,7 @@ type Mongo struct {
 }
 
 func GetMongos(ctx context.Context, credentials *AtlasCredentials, groupId string, clusterID string) ([]Mongo, error) {
-	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/processes", credentials, nil)
+	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/hosts", credentials, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func GetMongos(ctx context.Context, credentials *AtlasCredentials, groupId strin
 type DiskName string
 
 func GetMongoDisks(ctx context.Context, credentials *AtlasCredentials, groupId string, mongo string) ([]DiskName, error) {
-	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/processes/"+mongo+"/disks", credentials, nil)
+	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/hosts/"+mongo+"/disks", credentials, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +189,7 @@ func GetMongoDisks(ctx context.Context, credentials *AtlasCredentials, groupId s
 }
 
 func GetMongoDatabases(ctx context.Context, credentials *AtlasCredentials, groupId string, mongo string) ([]string, error) {
-	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/processes/"+mongo+"/databases", credentials, nil)
+	body, err := MakeHttpRequest(ctx, "/groups/"+groupId+"/hosts/"+mongo+"/databases", credentials, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +223,7 @@ type DataPoint struct {
 }
 
 func GetDatabaseMeasurements(ctx context.Context, credentials *AtlasCredentials, groupId, mongo, database string, options *MeasurementOptions) ([]*DataPoint, error) {
-	url := "/groups/" + groupId + "/processes/" + mongo + "/databases/" + database + "/measurements"
+	url := "/groups/" + groupId + "/hosts/" + mongo + "/databases/" + database + "/measurements"
 	body, err := MakeHttpRequest(ctx, url, credentials, GetMeasurementOptions(options))
 	if err != nil {
 		return nil, err
@@ -232,7 +232,7 @@ func GetDatabaseMeasurements(ctx context.Context, credentials *AtlasCredentials,
 }
 
 func GetProcessMeasurements(ctx context.Context, credentials *AtlasCredentials, groupId, mongo string, options *MeasurementOptions) ([]*DataPoint, error) {
-	url := "/groups/" + groupId + "/processes/" + mongo + "/measurements"
+	url := "/groups/" + groupId + "/hosts/" + mongo + "/measurements"
 	body, err := MakeHttpRequest(ctx, url, credentials, GetMeasurementOptions(options))
 	if err != nil {
 		return nil, err
@@ -241,7 +241,7 @@ func GetProcessMeasurements(ctx context.Context, credentials *AtlasCredentials, 
 }
 
 func GetDiskMeasurements(ctx context.Context, credentials *AtlasCredentials, groupId, mongo, disk string, options *MeasurementOptions) ([]*DataPoint, error) {
-	url := "/groups/" + groupId + "/processes/" + mongo + "/disks/" + disk + "/measurements"
+	url := "/groups/" + groupId + "/hosts/" + mongo + "/disks/" + disk + "/measurements"
 	body, err := MakeHttpRequest(ctx, url, credentials, GetMeasurementOptions(options))
 	if err != nil {
 		return nil, err
